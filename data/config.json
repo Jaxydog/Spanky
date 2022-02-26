@@ -1,8 +1,5 @@
 {
 	"dev": true,
 	"connect_interval": 5000,
-	"invite_link": "https://discord.com/api/oauth2/authorize?client_id=884095305803526165&permissions=8&scope=bot%20applications.commands",
-	"admins": [
-		"206260650010345483"
-	]
+	"invite_link": "https://discord.com/api/oauth2/authorize?client_id=884095305803526165&permissions=8&scope=bot%20applications.commands"
 }
