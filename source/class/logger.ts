@@ -25,6 +25,7 @@ export default class Logger {
 		const tag = `[${`${Date.now()}`}]`
 		const message = `${tag}\t${text}`
 		console.log(message)
+		await FS.mkdir(Logger.__rootFolder, { recursive: true })
 		await FS.appendFile(this.__path, `${message}\n`, { encoding: "utf8" })
 	}
 

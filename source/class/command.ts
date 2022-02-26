@@ -1,5 +1,4 @@
 import { CacheType, CommandInteraction } from "discord.js"
-import Commands from "../../data/commands.json"
 import Logger from "./logger"
 
 export type CommandCallback = (interaction: CommandInteraction<CacheType>) => boolean | Promise<boolean>
