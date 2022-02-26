@@ -1,0 +1,50 @@
+[
+	{
+		"emoji": "🙈",
+		"weight": 20
+	},
+	{
+		"emoji": "🙉",
+		"weight": 20
+	},
+	{
+		"emoji": "🙊",
+		"weight": 20
+	},
+	{
+		"emoji": "🐵",
+		"weight": 20
+	},
+	{
+		"emoji": "🐒",
+		"weight": 20
+	},
+	{
+		"emoji": "🍌",
+		"weight": 20
+	},
+	{
+		"emoji": "🦍",
+		"weight": 10
+	},
+	{
+		"emoji": "🦧",
+		"weight": 10
+	},
+	{
+		"emoji": "🥑",
+		"weight": 5
+	},
+	{
+		"emoji": "🐎",
+		"weight": 1
+	},
+	{
+		"emoji": "🐕",
+		"weight": 1
+	},
+	{
+		"emoji": "🐝",
+		"weight": 1
+	}
+]

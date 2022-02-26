@@ -1,0 +1,12 @@
+[
+	{
+		"name": "ping",
+		"description": "Checks the bot's connection",
+		"options": []
+	},
+	{
+		"name": "info",
+		"description": "Displays your user information",
+		"options": []
+	}
+]
