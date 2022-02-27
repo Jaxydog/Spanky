@@ -49,8 +49,36 @@ export async function refreshDevCommands(clientID: string, logger?: Logger) {
 		logger?.warn(e)
 	}
 }
+export function checkForWord(message: Message) {
+	return Words.some((word) =>
+		[
+			message.content.toLowerCase().includes(word),
+			message.attachments.some((v) =>
+				[
+					v.name?.toLowerCase().includes(word),
+					v.description?.toLowerCase().includes(word),
+					v.url?.toLowerCase().includes(word),
+					v.proxyURL?.toLowerCase().includes(word),
+				].some((_) => _)
+			),
+			message.embeds.some((v) =>
+				[
+					v.title?.toLowerCase().includes(word),
+					v.description?.toLowerCase().includes(word),
+					v.author?.name.toLowerCase().includes(word),
+					v.author?.url?.toLowerCase().includes(word),
+					v.author?.iconURL?.toLowerCase().includes(word),
+					v.author?.proxyIconURL.toLowerCase().includes(word),
+					v.footer?.text.toLowerCase().includes(word),
+					v.footer?.iconURL.toLowerCase().includes(word),
+					v.footer?.proxyIconURL.toLowerCase().includes(word),
+				].some((_) => _)
+			),
+		].some((_) => _)
+	)
+}
 export function react(message: Message, logger?: Logger) {
-	if (!Words.some((w) => message.content.toLowerCase().includes(w))) return
+	if (!checkForWord(message)) return
 
 	const weights: number[] = []
 	Reactions.forEach((r, i) => (weights[i] = r.weight + (weights[i - 1] ?? 0)))
