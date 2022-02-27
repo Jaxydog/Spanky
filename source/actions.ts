@@ -65,13 +65,27 @@ export function checkForWord(message: Message) {
 				[
 					v.title?.toLowerCase().includes(word),
 					v.description?.toLowerCase().includes(word),
-					v.author?.name.toLowerCase().includes(word),
+					v.author?.name?.toLowerCase().includes(word),
 					v.author?.url?.toLowerCase().includes(word),
 					v.author?.iconURL?.toLowerCase().includes(word),
-					v.author?.proxyIconURL.toLowerCase().includes(word),
-					v.footer?.text.toLowerCase().includes(word),
-					v.footer?.iconURL.toLowerCase().includes(word),
-					v.footer?.proxyIconURL.toLowerCase().includes(word),
+					v.author?.proxyIconURL?.toLowerCase().includes(word),
+					v.footer?.text?.toLowerCase().includes(word),
+					v.footer?.iconURL?.toLowerCase().includes(word),
+					v.footer?.proxyIconURL?.toLowerCase().includes(word),
+				].some((_) => _)
+			),
+			message.mentions.users.some((v) =>
+				[
+					v.username.toLowerCase().includes(word),
+					v.avatar?.toLowerCase().includes(word),
+					v.banner?.toLowerCase().includes(word),
+				].some((_) => _)
+			),
+			message.mentions.roles.some((v) =>
+				[
+					v.name?.toLowerCase().includes(word),
+					v.icon?.toLowerCase().includes(word),
+					v.hexColor?.toLowerCase().includes(word),
 				].some((_) => _)
 			),
 		].some((_) => _)
