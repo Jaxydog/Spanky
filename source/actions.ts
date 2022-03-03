@@ -49,44 +49,40 @@ export async function refreshDevCommands(clientID: string, logger?: Logger) {
 		logger?.warn(e)
 	}
 }
+function checkString(string: string, word: string) {
+	return (string ?? "").replaceAll(/\s/g, "").toLowerCase().includes(word)
+}
 export function checkForWord(message: Message) {
 	return Words.some((word) =>
 		[
-			message.content.toLowerCase().includes(word),
+			checkString(message.content, word),
 			message.attachments.some((v) =>
 				[
-					v.name?.toLowerCase().includes(word),
-					v.description?.toLowerCase().includes(word),
-					v.url?.toLowerCase().includes(word),
-					v.proxyURL?.toLowerCase().includes(word),
+					checkString(v.name, word),
+					checkString(v.description, word),
+					checkString(v.url, word),
+					checkString(v.proxyURL, word),
 				].some((_) => _)
 			),
 			message.embeds.some((v) =>
 				[
-					v.title?.toLowerCase().includes(word),
-					v.description?.toLowerCase().includes(word),
-					v.author?.name?.toLowerCase().includes(word),
-					v.author?.url?.toLowerCase().includes(word),
-					v.author?.iconURL?.toLowerCase().includes(word),
-					v.author?.proxyIconURL?.toLowerCase().includes(word),
-					v.footer?.text?.toLowerCase().includes(word),
-					v.footer?.iconURL?.toLowerCase().includes(word),
-					v.footer?.proxyIconURL?.toLowerCase().includes(word),
+					checkString(v.title, word),
+					checkString(v.description, word),
+					checkString(v.author?.name, word),
+					checkString(v.author?.url, word),
+					checkString(v.author?.iconURL, word),
+					checkString(v.author?.proxyIconURL, word),
+					checkString(v.footer?.text, word),
+					checkString(v.footer?.iconURL, word),
+					checkString(v.footer?.proxyIconURL, word),
+					v.fields.some((v) => [checkString(v.name, word), checkString(v.value, word)].some((_) => _)),
 				].some((_) => _)
 			),
 			message.mentions.users.some((v) =>
-				[
-					v.username.toLowerCase().includes(word),
-					v.avatar?.toLowerCase().includes(word),
-					v.banner?.toLowerCase().includes(word),
-				].some((_) => _)
+				[checkString(v.username, word), checkString(v.avatar, word), checkString(v.banner, word)].some((_) => _)
 			),
 			message.mentions.roles.some((v) =>
-				[
-					v.name?.toLowerCase().includes(word),
-					v.icon?.toLowerCase().includes(word),
-					v.hexColor?.toLowerCase().includes(word),
-				].some((_) => _)
+				[checkString(v.name, word), checkString(v.icon, word), checkString(v.hexColor, word)].some((_) => _)
 			),
 		].some((_) => _)
 	)
