@@ -1,4 +1,12 @@
-import { CacheType, CommandInteraction, Message, MessageEmbed } from "discord.js"
+import { CacheType, CommandInteraction, GuildMember, Message, MessageEmbed } from "discord.js"
+import {
+	entersState,
+	getVoiceConnection,
+	joinVoiceChannel,
+	VoiceConnection,
+	VoiceConnectionState,
+	VoiceConnectionStatus,
+} from "@discordjs/voice"
 import { REST } from "@discordjs/rest"
 import { Routes } from "discord-api-types/v9"
 
@@ -34,12 +42,74 @@ export function registerCommands(logger?: Logger) {
 	logger?.log(`Registering commands`)
 
 	Command.fromEntry(Commands[0], async (interaction) => {
-		await tempReplyEmbed(interaction, embed().setTitle("Pong!").setDescription("Monkey hears all 🙉"))
+		if (!(interaction.member instanceof GuildMember)) {
+			await tempReplyEmbed(
+				interaction,
+				embed().setTitle("Error occurred!").setDescription("An unknown error occurred.")
+			)
+			return false
+		}
+
+		const member = interaction.guild.members.resolve(interaction.member)
+		const channel = member.voice.channel
+
+		if (!channel || !channel.isVoice()) {
+			await tempReplyEmbed(interaction, embed().setTitle("Error occurred!").setDescription("Invalid channel."))
+			return false
+		}
+		if (!channel.joinable) {
+			await tempReplyEmbed(
+				interaction,
+				embed().setTitle("Error occurred!").setDescription("Unable to join channel.")
+			)
+			return false
+		}
+
+		const connection = joinVoiceChannel({
+			channelId: channel.id,
+			guildId: interaction.guildId,
+			adapterCreator: channel.guild.voiceAdapterCreator,
+		})
+
+		if (!connection) {
+			await tempReplyEmbed(interaction, embed().setTitle("Error occurred!").setDescription("Unable to connect."))
+			return false
+		}
+
+		connection.on(VoiceConnectionStatus.Disconnected, async () => {
+			try {
+				await Promise.race([
+					entersState(connection, VoiceConnectionStatus.Signalling, 5000),
+					entersState(connection, VoiceConnectionStatus.Connecting, 5000),
+				])
+			} catch {
+				connection.destroy()
+			}
+		})
+
+		await tempReplyEmbed(
+			interaction,
+			embed().setTitle("Joined channel!").setDescription("Monkey is in the building...")
+		)
 		return true
 	})
 	Command.fromEntry(Commands[1], async (interaction) => {
-		await tempReply(interaction, `WIP`)
-		return true
+		const connection = getVoiceConnection(interaction.guildId)
+
+		if (connection.state.status === VoiceConnectionStatus.Ready) {
+			connection.destroy()
+			await tempReplyEmbed(
+				interaction,
+				embed().setTitle("Left channel!").setDescription("Monkey has gone back into hiding...")
+			)
+			return true
+		} else {
+			await tempReplyEmbed(
+				interaction,
+				embed().setTitle("Error occurred!").setDescription("Unknown error occurred.")
+			)
+			return false
+		}
 	})
 }
 export async function refreshDevCommands(clientID: string, logger?: Logger) {
@@ -51,6 +121,18 @@ export async function refreshDevCommands(clientID: string, logger?: Logger) {
 		logger?.log(`Refreshed dev commands`)
 	} catch (e) {
 		logger?.warn(`Error refreshing dev commands`)
+		logger?.warn(e)
+	}
+}
+export async function refreshProdCommands(clientID: string, logger?: Logger) {
+	const rest = new REST({ version: "9" }).setToken(process.env.TOKEN)
+	const route = Routes.applicationCommands(clientID)
+
+	try {
+		await rest.put(route, { body: Commands })
+		logger?.log(`Refreshed production commands`)
+	} catch (e) {
+		logger?.warn(`Error refreshing commands`)
 		logger?.warn(e)
 	}
 }
@@ -104,7 +186,6 @@ function thoroughCheck(message: Message, string: string, removeSpaces = true) {
 		),
 	].some((_) => _)
 }
-
 function randomWeighted(list: WeightedList) {
 	const weights: number[] = []
 	list.forEach((r, i) => (weights[i] = r.weight + (weights[i - 1] ?? 0)))

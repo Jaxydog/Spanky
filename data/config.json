@@ -1,4 +1,4 @@
 {
-	"dev": false,
+	"dev": true,
 	"invite_link": "https://discord.com/api/oauth2/authorize?client_id=884095305803526165&permissions=8&scope=bot%20applications.commands"
 }

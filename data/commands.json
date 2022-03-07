@@ -1,12 +1,12 @@
 [
 	{
-		"name": "ping",
-		"description": "Checks the bot's connection",
+		"name": "join",
+		"description": "Joins your VC",
 		"options": []
 	},
 	{
-		"name": "info",
-		"description": "Displays your user information",
+		"name": "leave",
+		"description": "Leaves the VC",
 		"options": []
 	}
 ]
