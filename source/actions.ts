@@ -1,12 +1,5 @@
 import { CacheType, CommandInteraction, GuildMember, Message, MessageEmbed } from "discord.js"
-import {
-	entersState,
-	getVoiceConnection,
-	joinVoiceChannel,
-	VoiceConnection,
-	VoiceConnectionState,
-	VoiceConnectionStatus,
-} from "@discordjs/voice"
+import { entersState, getVoiceConnection, joinVoiceChannel, VoiceConnectionStatus } from "@discordjs/voice"
 import { REST } from "@discordjs/rest"
 import { Routes } from "discord-api-types/v9"
 
