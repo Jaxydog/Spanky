@@ -6,6 +6,7 @@ import { name, version, author } from "../package.json"
 import Commands from "../data/commands.json"
 import Words from "../data/words.json"
 import Reactions from "../data/reactions.json"
+import ReplyWords from "../data/replywords.json"
 import Logger from "./class/logger"
 import Command from "./class/command"
 
@@ -52,40 +53,43 @@ export async function refreshDevCommands(clientID: string, logger?: Logger) {
 function checkString(string: string, word: string) {
 	return (string ?? "").replaceAll(/\s/g, "").toLowerCase().includes(word)
 }
+function thoroughCheck(message: Message, string: string) {
+	return [
+		checkString(message.content, string),
+		message.attachments.some((v) =>
+			[
+				checkString(v.name, string),
+				checkString(v.description, string),
+				checkString(v.url, string),
+				checkString(v.proxyURL, string),
+			].some((_) => _)
+		),
+		message.embeds.some((v) =>
+			[
+				checkString(v.title, string),
+				checkString(v.description, string),
+				checkString(v.author?.name, string),
+				checkString(v.author?.url, string),
+				checkString(v.author?.iconURL, string),
+				checkString(v.author?.proxyIconURL, string),
+				checkString(v.footer?.text, string),
+				checkString(v.footer?.iconURL, string),
+				checkString(v.footer?.proxyIconURL, string),
+				v.fields.some((v) => [checkString(v.name, string), checkString(v.value, string)].some((_) => _)),
+			].some((_) => _)
+		),
+		message.mentions.users.some((v) =>
+			[checkString(v.username, string), checkString(v.avatar, string), checkString(v.banner, string)].some(
+				(_) => _
+			)
+		),
+		message.mentions.roles.some((v) =>
+			[checkString(v.name, string), checkString(v.icon, string), checkString(v.hexColor, string)].some((_) => _)
+		),
+	].some((_) => _)
+}
 export function checkForWord(message: Message) {
-	return Words.some((word) =>
-		[
-			checkString(message.content, word),
-			message.attachments.some((v) =>
-				[
-					checkString(v.name, word),
-					checkString(v.description, word),
-					checkString(v.url, word),
-					checkString(v.proxyURL, word),
-				].some((_) => _)
-			),
-			message.embeds.some((v) =>
-				[
-					checkString(v.title, word),
-					checkString(v.description, word),
-					checkString(v.author?.name, word),
-					checkString(v.author?.url, word),
-					checkString(v.author?.iconURL, word),
-					checkString(v.author?.proxyIconURL, word),
-					checkString(v.footer?.text, word),
-					checkString(v.footer?.iconURL, word),
-					checkString(v.footer?.proxyIconURL, word),
-					v.fields.some((v) => [checkString(v.name, word), checkString(v.value, word)].some((_) => _)),
-				].some((_) => _)
-			),
-			message.mentions.users.some((v) =>
-				[checkString(v.username, word), checkString(v.avatar, word), checkString(v.banner, word)].some((_) => _)
-			),
-			message.mentions.roles.some((v) =>
-				[checkString(v.name, word), checkString(v.icon, word), checkString(v.hexColor, word)].some((_) => _)
-			),
-		].some((_) => _)
-	)
+	return Words.some((word) => thoroughCheck(message, word))
 }
 export function react(message: Message, logger?: Logger) {
 	if (!checkForWord(message)) return
@@ -101,4 +105,9 @@ export function react(message: Message, logger?: Logger) {
 		logger?.log(`Reacting to message! ${item.emoji}`)
 		break
 	}
+}
+export function reply(message: Message, logger?: Logger) {
+	if (!ReplyWords.some((word) => thoroughCheck(message, word))) return
+	message.reply(`OOOH OOA AHHH AHH`)
+	logger?.log(`Replying to message! 💩`)
 }

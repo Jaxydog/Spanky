@@ -3,7 +3,7 @@ import DotEnv from "dotenv"
 
 import Config from "../data/config.json"
 import Logger from "./class/logger"
-import { react, refreshDevCommands, registerCommands } from "./actions"
+import { react, refreshDevCommands, registerCommands, reply } from "./actions"
 import Command from "./class/command"
 
 DotEnv.config()
@@ -35,6 +35,7 @@ client.on("interactionCreate", async (interaction) => {
 })
 client.on("messageCreate", (message) => {
 	react(message, logger)
+	reply(message, logger)
 })
 
 client.login(process.env.TOKEN)
