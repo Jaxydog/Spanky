@@ -7,8 +7,11 @@ import Commands from "../data/commands.json"
 import Words from "../data/words.json"
 import Reactions from "../data/reactions.json"
 import ReplyWords from "../data/replywords.json"
+import ReplyMessages from "../data/replymessages.json"
 import Logger from "./class/logger"
 import Command from "./class/command"
+
+type WeightedList = { item: string; weight: number }[]
 
 function embed() {
 	return new MessageEmbed({
@@ -26,6 +29,7 @@ async function tempReplyEmbed(interaction: CommandInteraction<CacheType>, reply:
 	await new Promise((r) => setTimeout(r, 5000))
 	await interaction.deleteReply()
 }
+
 export function registerCommands(logger?: Logger) {
 	logger?.log(`Registering commands`)
 
@@ -50,64 +54,81 @@ export async function refreshDevCommands(clientID: string, logger?: Logger) {
 		logger?.warn(e)
 	}
 }
-function checkString(string: string, word: string) {
-	return (string ?? "").replaceAll(/\s/g, "").toLowerCase().includes(word)
+
+function checkString(string: string, word: string, removeSpaces = true) {
+	const str = (string ?? "").toLowerCase()
+	return (removeSpaces ? str.replaceAll(/\s/g, "") : str).includes(word)
 }
-function thoroughCheck(message: Message, string: string) {
+function thoroughCheck(message: Message, string: string, removeSpaces = true) {
 	return [
-		checkString(message.content, string),
+		checkString(message.content, string, removeSpaces),
 		message.attachments.some((v) =>
 			[
-				checkString(v.name, string),
-				checkString(v.description, string),
-				checkString(v.url, string),
-				checkString(v.proxyURL, string),
+				checkString(v.name, string, removeSpaces),
+				checkString(v.description, string, removeSpaces),
+				checkString(v.url, string, removeSpaces),
+				checkString(v.proxyURL, string, removeSpaces),
 			].some((_) => _)
 		),
 		message.embeds.some((v) =>
 			[
-				checkString(v.title, string),
-				checkString(v.description, string),
-				checkString(v.author?.name, string),
-				checkString(v.author?.url, string),
-				checkString(v.author?.iconURL, string),
-				checkString(v.author?.proxyIconURL, string),
-				checkString(v.footer?.text, string),
-				checkString(v.footer?.iconURL, string),
-				checkString(v.footer?.proxyIconURL, string),
-				v.fields.some((v) => [checkString(v.name, string), checkString(v.value, string)].some((_) => _)),
+				checkString(v.title, string, removeSpaces),
+				checkString(v.description, string, removeSpaces),
+				checkString(v.author?.name, string, removeSpaces),
+				checkString(v.author?.url, string, removeSpaces),
+				checkString(v.author?.iconURL, string, removeSpaces),
+				checkString(v.author?.proxyIconURL, string, removeSpaces),
+				checkString(v.footer?.text, string, removeSpaces),
+				checkString(v.footer?.iconURL, string, removeSpaces),
+				checkString(v.footer?.proxyIconURL, string, removeSpaces),
+				v.fields.some((v) =>
+					[checkString(v.name, string, removeSpaces), checkString(v.value, string, removeSpaces)].some(
+						(_) => _
+					)
+				),
 			].some((_) => _)
 		),
 		message.mentions.users.some((v) =>
-			[checkString(v.username, string), checkString(v.avatar, string), checkString(v.banner, string)].some(
-				(_) => _
-			)
+			[
+				checkString(v.username, string, removeSpaces),
+				checkString(v.avatar, string, removeSpaces),
+				checkString(v.banner, string, removeSpaces),
+			].some((_) => _)
 		),
 		message.mentions.roles.some((v) =>
-			[checkString(v.name, string), checkString(v.icon, string), checkString(v.hexColor, string)].some((_) => _)
+			[
+				checkString(v.name, string, removeSpaces),
+				checkString(v.icon, string, removeSpaces),
+				checkString(v.hexColor, string, removeSpaces),
+			].some((_) => _)
 		),
 	].some((_) => _)
 }
-export function checkForWord(message: Message) {
-	return Words.some((word) => thoroughCheck(message, word))
-}
-export function react(message: Message, logger?: Logger) {
-	if (!checkForWord(message)) return
 
+function randomWeighted(list: WeightedList) {
 	const weights: number[] = []
-	Reactions.forEach((r, i) => (weights[i] = r.weight + (weights[i - 1] ?? 0)))
+	list.forEach((r, i) => (weights[i] = r.weight + (weights[i - 1] ?? 0)))
 	const maxWeight = weights[weights.length - 1]
 	const random = Math.random() * maxWeight
 
-	for (const item of Reactions) {
-		if (weights[Reactions.indexOf(item)] < random) continue
-		message.react(item.emoji)
-		logger?.log(`Reacting to message! ${item.emoji}`)
-		break
+	for (const item of list) {
+		if (weights[list.indexOf(item)] >= random) return item.item
 	}
+
+	return ""
+}
+
+export function react(message: Message, logger?: Logger) {
+	if (!Words.some((word) => thoroughCheck(message, word))) return
+
+	const emoji = randomWeighted(Reactions)
+	message.react(emoji)
+	logger?.log(`Reacting to message! ${emoji}`)
 }
 export function reply(message: Message, logger?: Logger) {
-	if (!ReplyWords.some((word) => thoroughCheck(message, word))) return
-	message.reply(`OOOH OOA AHHH AHH`)
-	logger?.log(`Replying to message! 💩`)
+	if (!ReplyWords.some((word) => thoroughCheck(message, word, false))) return
+
+	const reply = randomWeighted(ReplyMessages)
+	message.reply(reply)
+	logger?.log(`Replying to message! ${reply}`)
 }

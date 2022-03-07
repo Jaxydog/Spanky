@@ -1,58 +1,58 @@
 [
 	{
-		"emoji": "🙈",
+		"item": "🙈",
 		"weight": 20
 	},
 	{
-		"emoji": "🙉",
+		"item": "🙉",
 		"weight": 20
 	},
 	{
-		"emoji": "🙊",
+		"item": "🙊",
 		"weight": 20
 	},
 	{
-		"emoji": "🐵",
+		"item": "🐵",
 		"weight": 20
 	},
 	{
-		"emoji": "🐒",
+		"item": "🐒",
 		"weight": 20
 	},
 	{
-		"emoji": "🍌",
+		"item": "🍌",
 		"weight": 20
 	},
 	{
-		"emoji": "🦍",
+		"item": "🦍",
 		"weight": 10
 	},
 	{
-		"emoji": "🦧",
+		"item": "🦧",
 		"weight": 10
 	},
 	{
-		"emoji": "🥑",
+		"item": "🥑",
 		"weight": 5
 	},
 	{
-		"emoji": "🐎",
+		"item": "🐎",
 		"weight": 1
 	},
 	{
-		"emoji": "🐕",
+		"item": "🐕",
 		"weight": 1
 	},
 	{
-		"emoji": "🐝",
+		"item": "🐝",
 		"weight": 1
 	},
 	{
-		"emoji": "🐸",
+		"item": "🐸",
 		"weight": 1
 	},
 	{
-		"emoji": "🪱",
+		"item": "🪱",
 		"weight": 0.5
 	}
 ]

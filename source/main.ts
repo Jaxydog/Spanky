@@ -34,6 +34,7 @@ client.on("interactionCreate", async (interaction) => {
 	Command.handle(interaction, logger)
 })
 client.on("messageCreate", (message) => {
+	if (message.author.equals(client.user)) return
 	react(message, logger)
 	reply(message, logger)
 })
