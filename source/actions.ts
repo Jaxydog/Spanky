@@ -21,14 +21,18 @@ function embed() {
 	})
 }
 async function tempReply(interaction: CommandInteraction<CacheType>, reply: string) {
-	await interaction.reply(reply)
-	await new Promise((r) => setTimeout(r, 5000))
-	await interaction.deleteReply()
+	try {
+		await interaction.reply(reply)
+		await new Promise((r) => setTimeout(r, 5000))
+		await interaction.deleteReply()
+	} catch {}
 }
 async function tempReplyEmbed(interaction: CommandInteraction<CacheType>, reply: MessageEmbed) {
-	await interaction.reply({ embeds: [reply] })
-	await new Promise((r) => setTimeout(r, 5000))
-	await interaction.deleteReply()
+	try {
+		await interaction.reply({ embeds: [reply] })
+		await new Promise((r) => setTimeout(r, 5000))
+		await interaction.deleteReply()
+	} catch {}
 }
 
 export function registerCommands(logger?: Logger) {
