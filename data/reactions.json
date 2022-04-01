@@ -52,7 +52,19 @@
 		"weight": 1
 	},
 	{
+		"item": "🦀",
+		"weight": 1
+	},
+	{
+		"item": "🤨",
+		"weight": 1
+	},
+	{
 		"item": "🪱",
 		"weight": 0.5
+	},
+	{
+		"item": "🪳",
+		"weight": 0.1
 	}
 ]
