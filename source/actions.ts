@@ -94,7 +94,12 @@ export function registerCommands(logger?: Logger) {
 		const connection = getVoiceConnection(interaction.guildId)
 
 		if (connection.state.status === VoiceConnectionStatus.Ready) {
-			connection.destroy()
+			try {
+				connection.destroy()
+			} catch (error) {
+				logger.warn(error)
+			}
+
 			await tempReplyEmbed(
 				interaction,
 				embed().setTitle("Left channel!").setDescription("Monkey has gone back into hiding...")
