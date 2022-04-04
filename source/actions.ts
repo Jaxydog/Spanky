@@ -9,7 +9,7 @@ import Words from "../data/words.json"
 import Reactions from "../data/reactions.json"
 import ReplyWords from "../data/replywords.json"
 import ReplyMessages from "../data/replymessages.json"
-import Logger from "./class/logger"
+import Logger from "@jaxydog/clogts"
 import Command from "./class/command"
 
 type WeightedList = { item: string; weight: number }[]
@@ -36,7 +36,7 @@ async function tempReplyEmbed(interaction: CommandInteraction<CacheType>, reply:
 }
 
 export function registerCommands(logger?: Logger) {
-	logger?.log(`Registering commands`)
+	logger?.info(`Registering commands`)
 
 	Command.fromEntry(Commands[0], async (interaction) => {
 		if (!(interaction.member instanceof GuildMember)) {
@@ -120,7 +120,7 @@ export async function refreshDevCommands(clientID: string, logger?: Logger) {
 
 	try {
 		await rest.put(route, { body: Commands })
-		logger?.log(`Refreshed dev commands`)
+		logger?.info(`Refreshed dev commands`)
 	} catch (e) {
 		logger?.warn(`Error refreshing dev commands`)
 		logger?.warn(e)
@@ -132,7 +132,7 @@ export async function refreshProdCommands(clientID: string, logger?: Logger) {
 
 	try {
 		await rest.put(route, { body: Commands })
-		logger?.log(`Refreshed production commands`)
+		logger?.info(`Refreshed production commands`)
 	} catch (e) {
 		logger?.warn(`Error refreshing commands`)
 		logger?.warn(e)
@@ -206,12 +206,12 @@ export function react(message: Message, logger?: Logger) {
 
 	const emoji = randomWeighted(Reactions)
 	message.react(emoji)
-	logger?.log(`Reacting to message! ${emoji}`)
+	logger?.info(`Reacting to message! ${emoji}`)
 }
 export function reply(message: Message, logger?: Logger) {
 	if (!ReplyWords.some((word) => thoroughCheck(message, word, false))) return
 
 	const reply = randomWeighted(ReplyMessages)
 	message.reply(reply)
-	logger?.log(`Replying to message! ${reply}`)
+	logger?.info(`Replying to message! ${reply}`)
 }

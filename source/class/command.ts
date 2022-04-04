@@ -1,5 +1,5 @@
 import { CacheType, CommandInteraction } from "discord.js"
-import Logger from "./logger"
+import Logger from "@jaxydog/clogts"
 
 export type CommandCallback = (interaction: CommandInteraction<CacheType>) => boolean | Promise<boolean>
 
