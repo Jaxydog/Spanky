@@ -1,48 +1,64 @@
-import Discord from "discord.js"
-import DotEnv from "dotenv"
-
-import Package from "../package.json"
-import Config from "../data/config.json"
 import Logger from "@jaxydog/clogts"
-import { react, refreshDevCommands, refreshProdCommands, registerCommands, reply } from "./actions"
-import Command from "./class/command"
+import { BitFieldResolvable, Client, IntentsString, PresenceData } from "discord.js"
+import { config } from "dotenv"
 
-DotEnv.config()
+config()
 
-const logger = new Logger(Package.name)
-const client = new Discord.Client({
-	intents: ["GUILD_MEMBERS", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS", "GUILDS", "GUILD_VOICE_STATES"],
-})
+import { dev, intents, presence } from "../data/config.json"
+import Commands from "../data/command.json"
+import Reactions from "../data/reaction.json"
+import Replies from "../data/reply.json"
+import { handleCommand, messageContains, randomWeighted, refreshCommands } from "./utils.js"
 
-client.on("ready", () => {
-	logger.info(`Connected to API as ${client.user.tag}`)
+const client = new Client({ intents: intents as BitFieldResolvable<IntentsString, number> })
+let logger: Logger
 
-	if (Config.dev) {
-		logger.info(`Developer mode enabled 😎`)
-		refreshDevCommands(client.user.id, logger)
+client.on("ready", async () => {
+	logger = new Logger(client.user?.tag ?? "bot")
+
+	logger.info(`🤖 Logged in as user ${client.user?.tag ?? "[unknown]"} 🤖`)
+
+	if (dev) {
+		logger.info("🍌 Developer mode enabled! 🍌")
+		await refreshCommands(logger, Commands, client.user!.id, process.env["DEVGUILDID"])
 	} else {
-		logger.info(`Production mode enabled 😎`)
-		refreshProdCommands(client.user.id, logger)
+		logger.info("🥑 Production mode enabled! 🥑")
+		await refreshCommands(logger, Commands, client.user!.id)
 	}
 
-	registerCommands(logger)
+	client.user?.presence.set(presence as PresenceData)
+})
+client.on("presenceUpdate", (_, newPresence) => {
+	if (newPresence.status === presence.status && newPresence.activities[0] === presence.activities[0]) return
+	client.user?.presence.set(presence as PresenceData)
+})
+client.on("messageCreate", async (message) => {
+	if (message.author.id === client.user?.id) return
 
-	client.user.presence.set({
-		status: "idle",
-		activities: [{ type: "WATCHING", name: "for apes 👀" }],
-	})
+	if (Reactions.triggers.some((t) => messageContains(message, t))) {
+		const emoji = randomWeighted(Reactions.responses as [number, string][])
 
-	logger.info(`Updated client presence`)
+		try {
+			await message.react(emoji)
+			logger.info(`${emoji} Reacting to message! ${emoji}`)
+		} catch (error) {
+			logger.error(error)
+		}
+	}
+	if (Replies.triggers.some((t) => messageContains(message, t, false))) {
+		const reply = randomWeighted(Replies.responses as [number, string][])
+
+		try {
+			await message.reply(reply)
+			logger.info(`💩 Replying to message! 💩 >> ${reply}`)
+		} catch (error) {
+			logger.error(error)
+		}
+	}
 })
 client.on("interactionCreate", async (interaction) => {
 	if (!interaction.isCommand()) return
-	logger.info(`Interaction recieved: "${interaction.commandName}"`)
-	Command.handle(interaction, logger)
-})
-client.on("messageCreate", (message) => {
-	if (message.author.id === client.user.id) return
-	react(message, logger)
-	reply(message, logger)
+	await handleCommand(logger, interaction)
 })
 
-client.login(process.env.TOKEN)
+client.login(process.env["TOKEN"])

@@ -1,7 +1,7 @@
 [
 	{
 		"name": "join",
-		"description": "Joins your VC",
+		"description": "Joins a VC",
 		"options": []
 	},
 	{

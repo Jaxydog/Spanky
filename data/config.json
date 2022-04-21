@@ -1,4 +1,19 @@
 {
 	"dev": false,
-	"invite_link": "https://discord.com/api/oauth2/authorize?client_id=884095305803526165&permissions=8&scope=bot%20applications.commands"
+	"intents": [
+		"GUILDS",
+		"GUILD_MEMBERS",
+		"GUILD_MESSAGES",
+		"GUILD_MESSAGE_REACTIONS",
+		"GUILD_VOICE_STATES"
+	],
+	"presence": {
+		"status": "idle",
+		"activities": [
+			{
+				"type": "WATCHING",
+				"name": "for apes 👀"
+			}
+		]
+	}
 }
