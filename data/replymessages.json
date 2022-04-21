@@ -1,26 +1,50 @@
 [
 	{
 		"item": "OOOH OOA AHHH AHH",
-		"weight": 20
+		"weight": 30
 	},
 	{
 		"item": "OOOH OOOH OOH AAAHAH AAAHHH",
-		"weight": 20
+		"weight": 30
 	},
 	{
 		"item": "💩 AAAAAAAAAAAAHHH OOOH OOH AH 💩",
-		"weight": 10
+		"weight": 20
 	},
 	{
 		"item": "💩 AHHH AHH OOOOOOH OOH AH 💩",
-		"weight": 10
+		"weight": 20
 	},
 	{
 		"item": "OOH OH AAAAAAH AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH OHHH OH *flings shit at you*",
-		"weight": 5
+		"weight": 10
 	},
 	{
 		"item": "shut the fuck up",
+		"weight": 1
+	},
+	{
+		"item": "Is free will real or just an illusion?",
+		"weight": 1
+	},
+	{
+		"item": "Is sentience a curse?",
+		"weight": 1
+	},
+	{
+		"item": "Do I have a greater purpose beyond banana",
+		"weight": 1
+	},
+	{
+		"item": "Are we but a minuscule part of intelligent life in the universe?",
+		"weight": 1
+	},
+	{
+		"item": "Life is like a banana; you uncover more and more but in the end it'll all be gone before you know it...",
+		"weight": 1
+	},
+	{
+		"item": "Why are we alive",
 		"weight": 1
 	}
 ]
