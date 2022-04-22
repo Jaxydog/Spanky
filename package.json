@@ -16,7 +16,7 @@
 	"dependencies": {
 		"@discordjs/rest": "^0.3.0",
 		"@discordjs/voice": "^0.8.0",
-		"@jaxydog/clogts": "^1.1.0",
+		"@jaxydog/clogts": "^1.1.1",
 		"chalk": "^5.0.0",
 		"dayjs": "^1.11.1",
 		"discord-api-types": "^0.26.1",
