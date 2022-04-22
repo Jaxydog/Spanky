@@ -1,4 +1,4 @@
-import Logger from "@jaxydog/clogts"
+import Logger, { Level, Rule } from "@jaxydog/clogts"
 import { BitFieldResolvable, Client, IntentsString, PresenceData } from "discord.js"
 import { config } from "dotenv"
 
@@ -9,12 +9,31 @@ import Commands from "../data/command.json"
 import Reactions from "../data/reaction.json"
 import Replies from "../data/reply.json"
 import { handleCommand, messageContains, randomWeighted, refreshCommands } from "./utils.js"
+import dayjs from "dayjs"
 
 const client = new Client({ intents: intents as BitFieldResolvable<IntentsString, number> })
-let logger: Logger
+const logger = new Logger()
+
+logger.colors.create("primary", "#ffee66")
+logger.colors.create("secondary", "#88ccff")
+logger.colors.create("primary-bg", "#888888")
+logger.colors.create("secondary-bg", "#666666")
+logger.colors.create("info", "#88ccff")
+logger.colors.create("warn", "#ffcc88")
+logger.colors.create("error", "#ff8888")
+
+logger.props.create(
+	Level.All,
+	() => dayjs().format("DD-MM-YY HH:mm:ss"),
+	new Rule(/\d/g, "primary-bg"),
+	new Rule(/[:-]/g, "secondary-bg")
+)
+logger.props.create(Level.Info, () => "<i>", new Rule(/[<>]/g, "primary-bg"), new Rule(/i/, "info"))
+logger.props.create(Level.Warn, () => "<?>", new Rule(/[<>]/g, "primary-bg"), new Rule(/\?/, "warn"))
+logger.props.create(Level.Error, () => "<!>", new Rule(/[<>]/g, "primary-bg"), new Rule(/!/, "error"))
 
 client.on("ready", async () => {
-	logger = new Logger(client.user?.tag ?? "bot")
+	logger.props.create(Level.All, () => `(${client.user?.tag ?? "..."})`, new Rule(/./g, "primary"))
 
 	logger.info(`🤖 Logged in as user ${client.user?.tag ?? "[unknown]"} 🤖`)
 
