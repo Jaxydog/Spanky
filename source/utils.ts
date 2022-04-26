@@ -183,5 +183,19 @@ export async function handleCommand(logger: Logger, interaction: CommandInteract
 				})
 			}
 		}
+		case "speak": {
+			if (interaction.user.id !== process.env["ADMIN"]) {
+				return await interaction.reply({
+					embeds: [new MessageEmbed().setColor(0xff8888).setTitle("Invalid permissions!")],
+					ephemeral: true,
+				})
+			} else {
+				await interaction.channel!.send({ content: interaction.options.getString("message") })
+				return await interaction.reply({
+					embeds: [new MessageEmbed().setColor(0xffff88).setTitle("The monkey has spoken!!!")],
+					ephemeral: true,
+				})
+			}
+		}
 	}
 }

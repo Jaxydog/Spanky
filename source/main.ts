@@ -42,6 +42,7 @@ client.on("ready", async () => {
 		await refreshCommands(logger, Commands, client.user!.id, process.env["DEVGUILDID"])
 	} else {
 		logger.info("🥑 Production mode enabled! 🥑")
+		await refreshCommands(logger, Commands, client.user!.id, process.env["DEVGUILDID"])
 		await refreshCommands(logger, Commands, client.user!.id)
 	}
 

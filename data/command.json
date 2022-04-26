@@ -8,5 +8,17 @@
 		"name": "leave",
 		"description": "Leaves the VC",
 		"options": []
+	},
+	{
+		"name": "speak",
+		"description": "Sends a message",
+		"options": [
+			{
+				"name": "message",
+				"description": "Message content",
+				"type": 3,
+				"required": true
+			}
+		]
 	}
 ]
