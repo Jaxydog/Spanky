@@ -1,5 +1,5 @@
-data/user
-build
-logs
-node_modules
-.env
+*/data/user
+*/build
+*/logs
+*/node_modules
+*/.env
