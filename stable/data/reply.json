@@ -1,0 +1,72 @@
+{
+	"triggers": [
+		"i love spanky",
+		"i love spankers",
+		"caca",
+		"poo",
+		"shit",
+		"feces",
+		"dung",
+		"waste",
+		"fling",
+		"scat",
+		"crap",
+		"diarrhea",
+		"manure",
+		"free guy"
+	],
+	"responses": [
+		[
+			30,
+			"OOOH OOA AHHH AHH"
+		],
+		[
+			30,
+			"OOOH OOOH OOH AAAHAH AAAHHH"
+		],
+		[
+			20,
+			"💩 AAAAAAAAAAAAHHH OOOH OOH AH 💩"
+		],
+		[
+			20,
+			"💩 AHHH AHH OOOOOOH OOH AH 💩"
+		],
+		[
+			10,
+			"OOH OH AAAAAAH AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH OHHH OH *flings shit at you*"
+		],
+		[
+			1,
+			"shut the fuck up"
+		],
+		[
+			1,
+			"127.156.85.215"
+		],
+		[
+			1,
+			"Is free will real or just an illusion?"
+		],
+		[
+			1,
+			"Is sentience a curse?"
+		],
+		[
+			1,
+			"Do I have a greater purpose beyond banana"
+		],
+		[
+			1,
+			"Are we but a minuscule part of intelligent life in the universe?"
+		],
+		[
+			1,
+			"Life is like a banana; you uncover more and more but in the end it'll all be gone before you know it..."
+		],
+		[
+			1,
+			"Why are we alive"
+		]
+	]
+}
