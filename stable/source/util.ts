@@ -94,15 +94,12 @@ export function msgContains(msg: Message, target: string | RegExp, ignoreSpaces 
 		msg.mentions.users.some((v) =>
 			[
 				strContains(v.tag, target, ignoreSpaces, ignoreCase),
-				strContains(v.avatarURL() ?? "", target, ignoreSpaces, ignoreCase),
-				strContains(v.bannerURL() ?? "", target, ignoreSpaces, ignoreCase),
 				strContains(v.hexAccentColor ?? "", target, ignoreSpaces, ignoreCase),
 			].some((r) => r)
 		),
 		msg.mentions.roles.some((v) =>
 			[
 				strContains(v.name, target, ignoreSpaces, ignoreCase),
-				strContains(v.iconURL() ?? "", target, ignoreSpaces, ignoreCase),
 				strContains(v.hexColor, target, ignoreSpaces, ignoreCase),
 			].some((r) => r)
 		),
