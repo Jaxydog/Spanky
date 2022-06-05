@@ -141,7 +141,7 @@ client.commands
 		options: [
 			{
 				name: "emoji",
-				description: "Reaction emoji",
+				description: "Reaction emoji(s) (comma separated)",
 				type: 3,
 				required: true,
 			},
@@ -149,7 +149,7 @@ client.commands
 		default_permission: false,
 	})
 	.create("react", async ({ interact }) => {
-		const emoji = interact.options.getString("emoji", true)
+		const emojis = interact.options.getString("emoji", true).split(",")
 
 		if (!interact.channel) {
 			await interact.reply({
@@ -170,7 +170,7 @@ client.commands
 		}
 
 		try {
-			await message.react(emoji)
+			for (const emoji of emojis) await message.react(emoji)
 
 			await interact.reply({
 				embeds: [new EmbedBuilder().color("YELLOW").title("Live monkey reaction 🙉").build()],
