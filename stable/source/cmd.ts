@@ -8,7 +8,7 @@ import {
 import { EmbedBuilder } from "@jaxydog/dibbs"
 import { Message } from "discord.js"
 import { client } from "./main"
-import { getContained, MathN, WeightedList } from "./util"
+import { getContained, randWeight, WeightedList } from "./util"
 
 client.commands
 	.define("join", {
@@ -197,7 +197,7 @@ export async function tryReact(message: Message) {
 	if (!contained) return
 
 	try {
-		const response = MathN.randWeight(responses)
+		const response = randWeight(responses)
 		await message.react(response)
 
 		client.logger.info(`Reacted to message containing "${contained}" with "${response}"`)
@@ -212,7 +212,7 @@ export async function tryReply(message: Message) {
 	if (!contained) return
 
 	try {
-		const response = MathN.randWeight(responses)
+		const response = randWeight(responses)
 		await message.reply({ content: response })
 
 		client.logger.info(`Replied to message containing "${contained}" with "${response}"`)

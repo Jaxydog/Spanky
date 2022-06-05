@@ -5,42 +5,17 @@ export interface WeightedList<T, R> {
 	responses: [number, R][]
 }
 
-export module MathN {
-	export function rand(min: number, max: number) {
-		min = Math.ceil(min)
-		max = Math.floor(max)
-		return Math.floor(Math.random() * (max - min + 1) + min)
-	}
-	export function randDeviate(base: number, dev: number) {
-		base = Math.abs(base)
-		dev = Math.abs(dev)
+export function randWeight<R>(list: [number, R][]): R {
+	const weightArr = list.map((i) => i[0])
+	const valueArr = list.map((i) => i[1])
+	const weights: number[] = []
 
-		if (dev > base) dev = base
+	for (let i = 0; i < weightArr.length; i++) {
+		weights[i] = weightArr[i]! + (weights[i - 1] ?? 0)
+	}
 
-		const min = base - dev
-		const max = base + dev
-		return rand(min, max)
-	}
-	export function randWeight<R>(list: [number, R][]): R {
-		const weightArr = list.map((i) => i[0])
-		const valueArr = list.map((i) => i[1])
-		const weights: number[] = []
-
-		for (let i = 0; i < weightArr.length; i++) {
-			weights[i] = weightArr[i]! + (weights[i - 1] ?? 0)
-		}
-
-		const random = Math.random() * weights[weights.length - 1]!
-		return valueArr.find((_, i) => weights[i]! >= random) ?? valueArr[0]!
-	}
-}
-export module MathB {
-	export function rand(min: bigint, max: bigint) {
-		return BigInt(MathN.rand(Number(min), Number(max)))
-	}
-	export function randDeviate(base: bigint, dev: bigint) {
-		return BigInt(MathN.randDeviate(Number(base), Number(dev)))
-	}
+	const random = Math.random() * weights[weights.length - 1]!
+	return valueArr.find((_, i) => weights[i]! >= random) ?? valueArr[0]!
 }
 
 export function strContains(str: string, target: string | RegExp, ignoreSpaces = false, ignoreCase = true) {
