@@ -170,9 +170,11 @@ client.commands
 		}
 
 		try {
+			await interact.deferReply({ ephemeral: true })
+
 			for (const emoji of emojis) await message.react(emoji)
 
-			await interact.reply({
+			await interact.followUp({
 				embeds: [new EmbedBuilder().color("YELLOW").title("Live monkey reaction 🙉").build()],
 				ephemeral: true,
 			})
@@ -207,7 +209,7 @@ export async function tryReact(message: Message) {
 }
 export async function tryReply(message: Message) {
 	const { responses, triggers } = (await client.storage.get<WeightedList<string, string>>("reply"))!
-	const contained = getContained(message, triggers, true, true)
+	const contained = getContained(message, triggers, false, true)
 
 	if (!contained) return
 
