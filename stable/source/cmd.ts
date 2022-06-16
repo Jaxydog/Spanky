@@ -85,17 +85,17 @@ client.commands
 			return
 		}
 
-		const connect = getVoiceConnection(interact.guild.id)
-
-		if (!connect) {
-			await interact.reply({
-				embeds: [new EmbedBuilder().color("RED").title("No voice connection found!").build()],
-				ephemeral: true,
-			})
-			return
-		}
-
 		try {
+			const connect = getVoiceConnection(interact.guild.id)
+
+			if (!connect) {
+				await interact.reply({
+					embeds: [new EmbedBuilder().color("RED").title("No voice connection found!").build()],
+					ephemeral: true,
+				})
+				return
+			}
+
 			connect.destroy()
 
 			await interact.reply({
