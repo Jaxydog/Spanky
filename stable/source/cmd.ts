@@ -169,9 +169,9 @@ client.commands
 			return
 		}
 
-		try {
-			await interact.deferReply({ ephemeral: true })
+		await interact.deferReply({ ephemeral: true })
 
+		try {
 			for (const emoji of emojis) await message.react(emoji)
 
 			await interact.followUp({
@@ -179,7 +179,7 @@ client.commands
 				ephemeral: true,
 			})
 		} catch (error) {
-			await interact.reply({
+			await interact.followUp({
 				embeds: [
 					new EmbedBuilder()
 						.color("RED")
