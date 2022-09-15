@@ -1,0 +1,9 @@
+{
+	"main": "build/main.js",
+	"dependencies": {
+		"@jaxydog/wyverncore": "^1.0.4",
+		"csvtojson": "^2.0.10",
+		"discord.js": "^14.3.0",
+		"dotenv": "^16.0.2"
+	}
+}

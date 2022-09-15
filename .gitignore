@@ -1,5 +1,7 @@
-*/data/user
-*/build
-*/logs
-*/node_modules
-*/.env
+data/*/
+build/
+logs/
+node_modules/
+.env
+*.old.*
+*.old/

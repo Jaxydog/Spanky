@@ -1,13 +1,13 @@
 {
 	"compilerOptions": {
-		"allowJs": true,
 		"allowSyntheticDefaultImports": true,
 		"alwaysStrict": true,
 		"checkJs": true,
 		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
 		"esModuleInterop": true,
 		"listEmittedFiles": true,
-		"module": "CommonJS",
+		"module": "NodeNext",
 		"moduleResolution": "Node",
 		"noFallthroughCasesInSwitch": true,
 		"noImplicitAny": true,
@@ -20,8 +20,11 @@
 		"removeComments": true,
 		"resolveJsonModule": true,
 		"strict": true,
+		"skipLibCheck": true,
 		"target": "ESNext",
-		"useUnknownInCatchVariables": true
+		"useUnknownInCatchVariables": true,
+
+		"lib": ["ESNext"]
 	},
 
 	"include": ["source"]
