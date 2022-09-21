@@ -9,7 +9,7 @@ export function object_contains_str(
 	target: string | RegExp,
 	rm_nontext = false,
 	rm_case = false,
-	max_d = 3,
+	max_d = 5,
 	d = 0
 ) {
 	if (d >= max_d) return false
